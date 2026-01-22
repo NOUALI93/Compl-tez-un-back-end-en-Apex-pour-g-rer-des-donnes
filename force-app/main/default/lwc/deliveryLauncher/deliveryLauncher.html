@@ -1,0 +1,76 @@
+<template>
+  <template if:true={hasPermission}>
+    <lightning-card title="Options de livraison">
+      <div class="slds-p-around_medium">
+
+        <template if:true={errorMsg}>
+          <p class="slds-text-color_error">{errorMsg}</p>
+        </template>
+
+        <template if:true={hasOptions}>
+          <div class="slds-m-bottom_medium">
+            <lightning-radio-group
+              name="mode"
+              label="Choisir une option"
+              options={modeOptions}
+              value={selectedMode}
+              type="radio"
+              onchange={handleModeChange}>
+            </lightning-radio-group>
+          </div>
+
+          <div class="slds-grid slds-gutters slds-m-bottom_medium">
+            <div class="slds-col">
+              <lightning-card title="Moins chère">
+                <div class="slds-p-around_small">
+                  <p><b>{optionsResp.cheapest.transporteurName}</b></p>
+                  <p>Prix : {optionsResp.cheapest.tarif} €</p>
+                  <p>Délai : {optionsResp.cheapest.delai} jours</p>
+                </div>
+              </lightning-card>
+            </div>
+
+            <div class="slds-col">
+              <lightning-card title="Plus rapide">
+                <div class="slds-p-around_small">
+                  <p><b>{optionsResp.fastest.transporteurName}</b></p>
+                  <p>Prix : {optionsResp.fastest.tarif} €</p>
+                  <p>Délai : {optionsResp.fastest.delai} jours</p>
+                </div>
+              </lightning-card>
+            </div>
+          </div>
+
+          <template if:true={isManual}>
+            <div class="slds-m-bottom_medium">
+              <lightning-combobox
+                label="Autre transporteur compatible"
+                placeholder="Sélectionner..."
+                options={transporteurPicklist}
+                value={selectedTransporteurId}
+                onchange={handleTransporteurChange}>
+              </lightning-combobox>
+            </div>
+          </template>
+
+          <lightning-button
+            label="Lancer la livraison"
+            variant="brand"
+            onclick={handleLaunch}
+            disabled={isSending}
+            class="slds-button_stretch">
+          </lightning-button>
+        </template>
+
+      </div>
+    </lightning-card>
+  </template>
+
+  <template if:false={hasPermission}>
+    <lightning-card title="Options de livraison">
+      <div class="slds-p-around_medium">
+        <p class="slds-text-color_error">Accès refusé</p>
+      </div>
+    </lightning-card>
+  </template>
+</template>
