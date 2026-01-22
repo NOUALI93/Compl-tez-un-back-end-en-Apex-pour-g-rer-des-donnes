@@ -2,7 +2,7 @@
 public with sharing class AccountSelector {
     public static Account getAccountById(Id accountId) {
         return [
-                SELECT Id, Name, Type, Industry, BillingCity, BillingCountry, Phone, Website
+                SELECT Id, Name, Client_Type__c, ShippingCountry
                 FROM Account
                 WHERE Id = :accountId
         ];
